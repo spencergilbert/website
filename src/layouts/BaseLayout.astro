@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Spencer Gilbert — platform and infrastructure engineer.',
+} = Astro.props;
+
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/resume', label: 'Resume' },
+];
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-title" href="/">Spencer Gilbert</a>
+      <nav>
+        {
+          nav.map((item) => (
+            <a
+              href={item.href}
+              aria-current={Astro.url.pathname === item.href ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>
+        The resume renders to both HTML and PDF from one file. Static site, no
+        trackers.
+      </p>
+      <p class="muted">© {year} Spencer Gilbert</p>
+    </footer>
+  </body>
+</html>

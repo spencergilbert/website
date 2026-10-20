@@ -1,0 +1,54 @@
+---
+import type { Work } from '../lib/resume';
+
+interface Props {
+  entries: Work[];
+  /** Show the site-only story fields (chapter, aside). Off for the resume. */
+  story?: boolean;
+}
+
+const { entries, story = false } = Astro.props;
+
+function formatDate(value?: string | null): string {
+  if (!value) return 'Present';
+  const date = new Date(`${value}-01T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+---
+
+<ol class="timeline">
+  {
+    entries.map((entry) => (
+      <li class="timeline__item">
+        <div class="timeline__when">
+          <time>{formatDate(entry.startDate)}</time>
+          <span aria-hidden="true"> – </span>
+          <time>{formatDate(entry.endDate)}</time>
+        </div>
+        <div class="timeline__body">
+          {story && entry.chapter && (
+            <p class="timeline__chapter">{entry.chapter}</p>
+          )}
+          <h3>
+            {entry.position}
+            {entry.name ? ` · ${entry.name}` : ''}
+          </h3>
+          {entry.location && <p class="muted">{entry.location}</p>}
+          {entry.highlights.length > 0 && (
+            <ul>
+              {entry.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          )}
+          {story && entry.aside && <p class="timeline__aside">{entry.aside}</p>}
+        </div>
+      </li>
+    ))
+  }
+</ol>

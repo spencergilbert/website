@@ -1,0 +1,24 @@
+---
+import { resume, byNewest, summaryParagraphs } from '../lib/resume';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Timeline from '../components/Timeline.astro';
+
+const [hook, ...rest] = summaryParagraphs(resume.basics);
+const experience = byNewest(resume.work);
+---
+
+<BaseLayout title="Spencer Gilbert — platform & infrastructure engineer">
+  <section class="hero">
+    <h1>{hook ?? 'Platform & infrastructure engineer.'}</h1>
+    {rest.length > 0 && <p class="lede">{rest.join(' ')}</p>}
+    <p class="links">
+      <a class="button" href="/resume">Resume</a>
+      <a href="/spencer-gilbert-cv.pdf">Download PDF</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>Timeline</h2>
+    <Timeline entries={experience} story />
+  </section>
+</BaseLayout>

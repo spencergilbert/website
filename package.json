@@ -1,0 +1,27 @@
+{
+  "name": "spencergilbert.dev",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "render:cv": "node scripts/render-cv.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.3.8",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "playwright": "^1.64.0",
+    "typescript": "^6.0.3"
+  }
+}

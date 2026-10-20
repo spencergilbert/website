@@ -1,0 +1,43 @@
+# Single source of truth for the resume and the home timeline, in the
+# JSON Resume format (https://jsonresume.org/).
+#
+# JSON Resume allows additional properties on `work` items, so `chapter` and
+# `aside` ride along as site-only story fields and are kept out of the PDF.
+#
+# TODO: replace the placeholder roles and contact details with real ones.
+basics:
+  name: Spencer Gilbert
+  label: Platform & Infrastructure Engineer
+  email: me@spencergilbert.dev
+  url: https://spencergilbert.dev
+  summary: |-
+    I used to file the tickets. Now I fix the causes.
+    Self-taught, from a startup support desk into platform engineering.
+  profiles:
+    - network: GitHub
+      username: spencergilbert
+      url: https://github.com/spencergilbert
+work:
+  - name: Placeholder Co
+    position: Platform Engineer
+    startDate: 2023-01
+    location: Remote
+    highlights:
+      - Replaced hand-run deploys with a pipeline that cut release time from 25 to 8 minutes.
+      - Removed a recurring class of incidents by fixing the root cause instead of the symptom.
+    chapter: Fixing things instead of reporting them
+    aside: I was the person who used to file this ticket.
+  - name: Earlier Startup
+    position: Support Engineer
+    startDate: 2019-01
+    endDate: 2022-12
+    location: Remote
+    highlights:
+      - Worked the front line of customer incidents and learned the failure modes first-hand.
+    chapter: Learning the system from the outside
+    aside: Every ticket was a bug report nobody had filed yet.
+skills:
+  - name: Languages
+    keywords: [Go, Rust, Python, TypeScript, SQL]
+  - name: Platform
+    keywords: [Kubernetes, Linux, CI/CD, observability, DevEx tooling]

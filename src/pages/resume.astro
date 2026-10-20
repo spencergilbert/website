@@ -1,0 +1,62 @@
+---
+import { resume, byNewest, summaryParagraphs } from '../lib/resume';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Timeline from '../components/Timeline.astro';
+
+const { basics, skills } = resume;
+const experience = byNewest(resume.work);
+const summary = summaryParagraphs(basics);
+---
+
+<BaseLayout
+  title="Resume — Spencer Gilbert"
+  description="Resume for Spencer Gilbert, platform and infrastructure engineer."
+>
+  <header class="resume-header">
+    <h1>{basics.name}</h1>
+    <p class="muted">{basics.label}</p>
+    <p class="contact">
+      {basics.email && <a href={`mailto:${basics.email}`}>{basics.email}</a>}
+      {
+        basics.url && (
+          <a href={basics.url}>{basics.url.replace(/^https?:\/\//, '')}</a>
+        )
+      }
+    </p>
+    <p class="links">
+      <a class="button" href="/spencer-gilbert-cv.pdf">Download PDF</a>
+    </p>
+  </header>
+
+  {
+    summary.length > 0 && (
+      <section>
+        <h2>Summary</h2>
+        {summary.map((text) => (
+          <p>{text}</p>
+        ))}
+      </section>
+    )
+  }
+
+  <section>
+    <h2>Experience</h2>
+    <Timeline entries={experience} />
+  </section>
+
+  {
+    skills.length > 0 && (
+      <section>
+        <h2>Skills</h2>
+        <dl class="skills">
+          {skills.map((skill) => (
+            <>
+              <dt>{skill.name}</dt>
+              <dd>{skill.keywords.join(', ')}</dd>
+            </>
+          ))}
+        </dl>
+      </section>
+    )
+  }
+</BaseLayout>
