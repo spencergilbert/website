@@ -1,19 +1,24 @@
 # spencergilbert.dev
 
-The design is **calm, professional, and doesn't take itself too seriously.**
+The site is a **hand-drafted sketch on dot paper** — the drafting table, not
+the napkin. Architectural lettering for display type, mono for labels, clean
+sans for body copy. Warm paper, ink lines, one redline accent.
 
-### Calm
+### Paper & ink
 
-- One accent color. Warm neutral background. No gradients, glows, or glass.
-- Generous whitespace; a single thin vertical line is the whole timeline motif.
-- Motion is subtle and opt-in; every animation is behind
+- Warm dot-paper background. Hand-ruled header, section, and footer lines;
+  no gradients, glows, or glass.
+- The timeline rail reads as one attempted hand line with a visible redraw,
+  one card per role with hand ticks and dots.
+- Sketch styles are scoped to `body.sketch`, so the resume page never sees
+  them. Motion is subtle and opt-in; every animation is behind
   `@supports` and `prefers-reduced-motion`.
-- The page should read as a document, not an app.
 
-### Professional
+### The resume stays a document
 
-- Resume lines are plain, factual, and numeric. Every job gets 2–3 outcomes
-  with a measured effect where one exists.
+- Resume links point straight at the PDF. The resume page itself is unstyled
+  paper: plain, factual lines, every job with 2–3 outcomes and a measured
+  effect where one exists.
 - The PDF is ATS-safe (tagged, real Unicode text) and is literally the same
   page as the HTML resume.
 - Fast, accessible, no layout shift, works without JavaScript.
