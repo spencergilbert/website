@@ -3,41 +3,108 @@
 #
 # JSON Resume allows additional properties on `work` items, so `chapter` and
 # `aside` ride along as site-only story fields and are kept out of the PDF.
-#
-# TODO: replace the placeholder roles and contact details with real ones.
 basics:
   name: Spencer Gilbert
   label: Platform & Infrastructure Engineer
+  hook: I used to file the tickets. Now I fix the causes.
   email: me@spencergilbert.dev
   url: https://spencergilbert.dev
+  #TODO: add real shit
   summary: |-
-    I used to file the tickets. Now I fix the causes.
-    Self-taught, from a startup support desk into platform engineering.
+    Platform engineer focused on release infrastructure and developer tooling. Built and owned the systems that ship software at scale, making them simpler, more reliable, and harder to compromise. Gravitates toward cross-cutting problems that span multiple teams: CI/CD pipelines, build systems, deployment automation. Leaves them in a state where other engineers don't have to think about them as much.
+  #TODO: add real shit
   profiles:
     - network: GitHub
       username: spencergilbert
       url: https://github.com/spencergilbert
 work:
-  - name: Placeholder Co
+  - name: Mux
     position: Platform Engineer
-    startDate: 2023-01
+    startDate: 2026-05
+    location: Remote
+  - name: Datadog
+    position: Software Engineer II, Agent Delivery
+    startDate: 2023-10
+    endDate: 2026-05
     location: Remote
     highlights:
-      - Replaced hand-run deploys with a pipeline that cut release time from 25 to 8 minutes.
-      - Removed a recurring class of incidents by fixing the root cause instead of the symptom.
-    chapter: Fixing things instead of reporting them
-    aside: I was the person who used to file this ticket.
-  - name: Earlier Startup
-    position: Support Engineer
+      - Reduced Agent release cadence from six to four weeks, maintaining a tighter active version window across millions of global deployments
+      - Owned release pipeline infrastructure and public artifact publishing tooling, including OS package repositories and container image distribution
+      - Led security hardening of release infrastructure, reducing human and system access by an order of magnitude without disrupting engineer workflows
+      - Drove modernization of legacy release tooling, migrating Python and Bash systems to Go, and contributed to the datadog-agent's adoption of Bazel as part of a broader build system modernization effort
+      - Drove team adoption of AI-assisted development tooling, measurably increasing delivery velocity without compromising release stability
+  - name: Datadog
+    position: Software Engineer II, Vector
+    startDate: 2021-05
+    endDate: 2023-09
+    location: Remote
+    highlights:
+      - Authored Vector's initial OpenTelemetry integration, maintaining compatibility across rapidly evolving OTel and Kubernetes ecosystem versions
+      - Owned Vector's deployment artifact ecosystem including Helm charts, Docker images, and Linux packages, establishing operational best practices and scaling guidance for a high-performance Rust-based observability pipeline
+      - Supported deployment and operations for a large open-source community across a project with 21.5K GitHub stars, helping enterprise users scale and operate Vector in production environments
+  - name: Optoro
+    position: Senior Infrastructure Engineer
+    startDate: 2021-03
+    endDate: 2021-04
+    location: Washington, D.C. | Hybrid
+    highlights:
+      - Built Kubernetes-based production infrastructure from the ground up, including tooling, best practices, and underlying private cloud hardware
+      - Introduced and owned ArgoCD, driving fully automated staging environment provisioning alongside self-hosted CI/CD administration via Terraform and GitLab CI
+      - Partnered with application teams to reduce infrastructure friction, embedding directly with Ruby and Python engineers to unblock development and resolve cross-cutting dependencies
+  - name: Optoro
+    position: Infrastructure Engineer
+    startDate: 2020-07
+    endDate: 2021-03
+    location: Washington, D.C.
+    resume: false
+  - name: Optoro
+    position: Junior Infrastructure Engineer
     startDate: 2019-01
-    endDate: 2022-12
-    location: Remote
+    endDate: 2020-07
+    location: Washington, D.C.
+    resume: false
+  - name: Optoro
+    position: Senior Platform Stability Associate
+    startDate: 2018-04
+    endDate: 2018-12
+    location: Washington, D.C.
     highlights:
-      - Worked the front line of customer incidents and learned the failure modes first-hand.
-    chapter: Learning the system from the outside
-    aside: Every ticket was a bug report nobody had filed yet.
+      - Drove blameless postmortem culture and led cross-team incident response, consistently maintaining SLA commitments through faster time to recovery
+      - Owned on-call monitoring and alert triage across a distributed production environment
+      - Upskilled engineering teams on Docker, Consul, Vault, Terraform, and internal deployment tooling
+  - name: Optoro
+    position: Platform Stability Associate
+    startDate: 2017-04
+    endDate: 2018-04
+    location: Washington, D.C.
+    resume: false
+  - name: Optoro
+    position: eCommerce Operations Analyst
+    startDate: 2016-01
+    endDate: 2017-04
+    location: Washington, D.C.
+    resume: false
+  - name: Optoro
+    position: Customer Care Associate
+    startDate: 2015-06
+    endDate: 2016-01
+    location: Washington, D.C.
+    resume: false
+    #TODO: add real shit
+    # chapter: Learning the system from the outside
+    # aside: Every ticket was a bug report nobody had filed yet.
 skills:
   - name: Languages
-    keywords: [Go, Rust, Python, TypeScript, SQL]
-  - name: Platform
-    keywords: [Kubernetes, Linux, CI/CD, observability, DevEx tooling]
+    keywords: [Go, Rust, Python, Bash]
+  - name: Infrastructure
+    keywords:
+      [Kubernetes, Helm, Docker, Podman, Terraform, Consul, Vault, Kafka]
+  - name: Observability
+    keywords: [Datadog, Vector, Prometheus, Grafana, OpenTelemetry, Elastic]
+  - name: SDLC
+    keywords:
+      [GitLab CI, GitHub Actions, Bazel, ArgoCD, Container images, RPM, DEB]
+education:
+  - institution: Appalachian State University
+    area: Actuarial Science
+    studyType: Bachelor of Science

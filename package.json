@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "render:cv": "node scripts/render-cv.mjs",
+    "watch:cv": "node scripts/render-cv.mjs --watch",
     "astro": "astro"
   },
   "dependencies": {

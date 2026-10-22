@@ -1,11 +1,72 @@
 ---
 import { resume, byNewest, summaryParagraphs } from '../lib/resume';
+import type { Work } from '../lib/resume';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Timeline from '../components/Timeline.astro';
 
-const { basics, skills } = resume;
-const experience = byNewest(resume.work);
+const { basics, skills, education } = resume;
 const summary = summaryParagraphs(basics);
+
+// Consecutive roles at the same company are grouped, so a progression reads
+// as one employer with several titles rather than repeated full entries —
+// including a single-role company like Mux, for uniform formatting.
+// `resume: false` still opts an entry out of the resume entirely.
+const work = byNewest(resume.work.filter((job) => job.resume));
+
+interface Company {
+  name: string;
+  location?: string | null;
+  roles: Work[];
+}
+
+const companies: Company[] = [];
+for (const job of work) {
+  const current = companies[companies.length - 1];
+  if (current && current.name === job.name) {
+    current.roles.push(job);
+  } else {
+    companies.push({ name: job.name, location: job.location, roles: [job] });
+  }
+}
+
+for (const company of companies) {
+  company.location =
+    company.roles.find((role) => role.location)?.location ?? null;
+}
+
+interface ContactItem {
+  label: string;
+  href?: string;
+}
+
+const contact: ContactItem[] = [
+  ...(basics.email
+    ? [{ label: basics.email, href: `mailto:${basics.email}` }]
+    : []),
+  ...(basics.url
+    ? [{ label: basics.url.replace(/^https?:\/\//, ''), href: basics.url }]
+    : []),
+  ...basics.profiles
+    .filter((profile) => profile.url)
+    .map((profile) => ({
+      label: profile.network,
+      href: profile.url ?? undefined,
+    })),
+];
+
+function formatMonth(value: string): string {
+  const date = new Date(`${value}-01T00:00:00Z`);
+  return Number.isNaN(date.getTime())
+    ? value
+    : date.toLocaleDateString('en-US', {
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'UTC',
+      });
+}
+
+function formatRange(start: string, end?: string | null): string {
+  return `${formatMonth(start)} – ${end ? formatMonth(end) : 'Present'}`;
+}
 ---
 
 <BaseLayout
@@ -14,13 +75,23 @@ const summary = summaryParagraphs(basics);
 >
   <header class="resume-header">
     <h1>{basics.name}</h1>
-    <p class="muted">{basics.label}</p>
-    <p class="contact">
-      {basics.email && <a href={`mailto:${basics.email}`}>{basics.email}</a>}
+    <p class="resume-label">{basics.label}</p>
+    <p class="resume-contact">
       {
-        basics.url && (
-          <a href={basics.url}>{basics.url.replace(/^https?:\/\//, '')}</a>
-        )
+        contact.map((item, index) => (
+          <>
+            {index > 0 && (
+              <span class="sep" aria-hidden="true">
+                ·
+              </span>
+            )}
+            {item.href ? (
+              <a href={item.href}>{item.label}</a>
+            ) : (
+              <span>{item.label}</span>
+            )}
+          </>
+        ))
       }
     </p>
     <p class="links">
@@ -30,32 +101,87 @@ const summary = summaryParagraphs(basics);
 
   {
     summary.length > 0 && (
-      <section>
+      <section class="resume-section">
         <h2>Summary</h2>
         {summary.map((text) => (
-          <p>{text}</p>
+          <p class="resume-summary">{text}</p>
         ))}
       </section>
     )
   }
 
-  <section>
+  <section class="resume-section">
     <h2>Experience</h2>
-    <Timeline entries={experience} />
+    <ol class="entries">
+      {
+        companies.map((company) => (
+          <li class="company">
+            <div class="company__head">
+              <h3 class="company__name">
+                {company.name}
+                {company.location && (
+                  <span class="company__location">{company.location}</span>
+                )}
+              </h3>
+            </div>
+            <ol class="roles">
+              {company.roles.map((role) => (
+                <li class="role">
+                  <div class="role__head">
+                    <h4 class="role__title">{role.position}</h4>
+                    <p class="role__when">
+                      {formatRange(role.startDate, role.endDate)}
+                    </p>
+                  </div>
+                  {role.highlights.length > 0 && (
+                    <ul class="role__points">
+                      {role.highlights.map((highlight) => (
+                        <li>{highlight}</li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))
+      }
+    </ol>
   </section>
 
   {
-    skills.length > 0 && (
-      <section>
-        <h2>Skills</h2>
-        <dl class="skills">
-          {skills.map((skill) => (
-            <>
-              <dt>{skill.name}</dt>
-              <dd>{skill.keywords.join(', ')}</dd>
-            </>
+    education.length > 0 && (
+      <section class="resume-section">
+        <h2>Education</h2>
+        <ol class="entries">
+          {education.map((item) => (
+            <li class="entry">
+              <div class="entry__head">
+                <h3 class="entry__title">
+                  {item.institution}
+                  <span class="entry__company">
+                    {item.studyType} in {item.area}
+                  </span>
+                </h3>
+              </div>
+            </li>
           ))}
-        </dl>
+        </ol>
+      </section>
+    )
+  }
+
+  {
+    skills.length > 0 && (
+      <section class="resume-section">
+        <h2>Technologies</h2>
+        <ul class="skills">
+          {skills.map((skill) => (
+            <li>
+              <strong>{skill.name}:</strong> {skill.keywords.join(', ')}
+            </li>
+          ))}
+        </ul>
       </section>
     )
   }

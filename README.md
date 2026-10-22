@@ -20,8 +20,9 @@ The design is **calm, professional, and doesn't take itself too seriously.**
 
 ## Deploy plan
 
-1. Build a static `dist/` in CI, then run `npm run render:cv` (Chromium is a CI
-   dependency: `npx playwright install --with-deps chromium`).
+1. Run `npm run render:cv` (Chromium is a CI dependency:
+   `npx playwright install --with-deps chromium`). It builds the site, prints
+   the PDF, and writes it into `dist/`.
 2. Publish `dist/` to Cloudflare Pages with `wrangler pages deploy`.
 
 ## Still open

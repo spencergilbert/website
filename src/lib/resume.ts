@@ -11,6 +11,9 @@ import raw from '../data/resume.yaml?raw';
 const basicsSchema = z.object({
   name: z.string(),
   label: z.string(),
+  // Home-page hero line. Kept separate from `summary`, which is the resume's
+  // professional pitch. JSON Resume allows extras on `basics`.
+  hook: z.string().nullish(),
   email: z.string().nullish(),
   url: z.string().nullish(),
   // Paragraphs are separated by newlines in the JSON Resume summary string.
@@ -34,6 +37,9 @@ const workSchema = z.object({
   endDate: z.string().nullish(),
   location: z.string().nullish(),
   highlights: z.array(z.string()).default([]),
+  // Set `resume: false` to keep an entry in the data (and the home timeline)
+  // but omit it from the resume page and PDF. Included by default.
+  resume: z.boolean().default(true),
   // Site-only story fields, shown on the home timeline, never on the PDF.
   chapter: z.string().nullish(),
   aside: z.string().nullish(),
@@ -44,10 +50,17 @@ const skillSchema = z.object({
   keywords: z.array(z.string()).default([]),
 });
 
+const eduSchema = z.object({
+  institution: z.string(),
+  area: z.string(),
+  studyType: z.string(),
+});
+
 const resumeSchema = z.object({
   basics: basicsSchema,
   work: z.array(workSchema).default([]),
   skills: z.array(skillSchema).default([]),
+  education: z.array(eduSchema).default([]),
 });
 
 export const resume = resumeSchema.parse(parse(raw));
@@ -56,6 +69,7 @@ export type Resume = z.infer<typeof resumeSchema>;
 export type Basics = z.infer<typeof basicsSchema>;
 export type Work = z.infer<typeof workSchema>;
 export type Skill = z.infer<typeof skillSchema>;
+export type Education = z.infer<typeof eduSchema>;
 
 /** Newest first. */
 export const byNewest = (entries: Work[]): Work[] =>
