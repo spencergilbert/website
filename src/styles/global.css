@@ -356,12 +356,14 @@ h2 {
   content: ' — ';
 }
 
-.company__when {
-  margin: 0;
+.company__tenure {
+  font-weight: 400;
   color: var(--muted);
-  font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+}
+
+.company__tenure::before {
+  content: ' · ';
 }
 
 .roles {
@@ -543,7 +545,6 @@ h2 {
   }
 
   .entry__when,
-  .company__when,
   .role__when {
     font-size: 9pt;
   }
