@@ -1,0 +1,27 @@
+# Build the site and its resume PDF, then publish dist/ to Cloudflare Pages
+# (direct upload). Runs on the repository's spindle.
+#
+# Pipeline secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID.
+# The Pages project must already exist; `wrangler pages deploy` only creates one
+# interactively.
+when:
+  - event: "push"
+    branch: ["main"]
+engine: "microvm"
+image: "nixos"
+dependencies:
+  - nodejs_24
+  - chromium
+environment:
+  # Render with the NixOS Chromium; the bundled Playwright build is glibc-linked
+  # and would fail here. Steps run without the setuid sandbox.
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+  PLAYWRIGHT_CHROMIUM_EXECUTABLE: "chromium"
+  PLAYWRIGHT_CHROMIUM_ARGS: "--no-sandbox"
+steps:
+  - name: "Install dependencies"
+    command: "npm ci"
+  - name: "Build site and render resume PDF"
+    command: "npm run render:cv"
+  - name: "Deploy to Cloudflare Pages"
+    command: "npx wrangler pages deploy dist --project-name=spencergilbert-dev --branch=main --no-bundle"

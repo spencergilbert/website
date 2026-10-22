@@ -9,6 +9,7 @@
 import { isAbsolute, join, sep } from 'node:path';
 import { mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
+import { chromiumLaunchOptions } from '../scripts/chromium.mjs';
 
 export default function resumePdf() {
   let server;
@@ -28,7 +29,7 @@ export default function resumePdf() {
   const render = async () => {
     const { chromium } = await import('playwright');
     await mkdir(dirname(out), { recursive: true });
-    const browser = await chromium.launch();
+    const browser = await chromium.launch(chromiumLaunchOptions());
     try {
       const page = await browser.newPage();
       await page.goto(url(), { waitUntil: 'load' });

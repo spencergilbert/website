@@ -23,20 +23,29 @@ sans for body copy. Warm paper, ink lines, one redline accent.
   page as the HTML resume.
 - Fast, accessible, no layout shift, works without JavaScript.
 
-## Deploy plan
+## Deploy
 
-1. Run `npm run render:cv` (Chromium is a CI dependency:
-   `npx playwright install --with-deps chromium`). It builds the site, prints
-   the PDF, and writes it into `dist/`.
-2. Publish `dist/` to Cloudflare Pages with `wrangler pages deploy`.
+Pushing to `main` runs `.tangled/workflows/deploy.yml` on the repository's
+spindle. The workflow installs with `npm ci`, runs `npm run render:cv` to build
+the site and print the resume PDF, then uploads `dist/` to Cloudflare Pages with
+`wrangler pages deploy` (direct upload).
+
+Requirements:
+
+- A spindle selected under **Settings → Pipelines** that supports the `microvm`
+  engine.
+- `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` stored as pipeline secrets
+  in the same place.
+- The Pages project must already exist; `wrangler pages deploy` only creates one
+  interactively.
+
+Locally, `npm run render:cv` still builds and prints the PDF against the
+Playwright-managed Chromium. The workflow swaps in the NixOS Chromium through
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE` (see `scripts/chromium.mjs`).
 
 ## Still open
 
 - **Real resume content** — roles, contact, and metrics are placeholders.
-- **Repo host and CI.** The repo lives under `tangled.org` and mirrors to
-  GitHub (`spencergilbert/website`), so Cloudflare Pages' Git integration can
-  target it. Otherwise deploy `dist/` with `wrangler pages deploy` from
-  CI/manually.
 - **Does the `spencergilbert.dev` zone move to Cloudflare?** Needed before the
   apex can point at Pages.
 
