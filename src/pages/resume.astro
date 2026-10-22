@@ -6,16 +6,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const { basics, skills, education } = resume;
 const summary = summaryParagraphs(basics);
 
-// Consecutive roles at the same company are grouped, so a progression reads
-// as one employer with several titles rather than repeated full entries —
-// including a single-role company like Mux, for uniform formatting.
-// `resume: false` still opts an entry out of the resume entirely.
-const work = byNewest(resume.work.filter((job) => job.resume));
+// Consecutive roles at the same company are grouped so a progression reads as
+// one employer. `resume: false` gives a role no line of its own, but its dates
+// still count toward the company's overall span — so omitting the roles that
+// weren't distinct work doesn't leave a gap.
+const work = byNewest(resume.work);
 
 interface Company {
   name: string;
   location?: string | null;
+  start: string;
+  end?: string | null;
   roles: Work[];
+  visible: Work[];
 }
 
 const companies: Company[] = [];
@@ -24,13 +27,27 @@ for (const job of work) {
   if (current && current.name === job.name) {
     current.roles.push(job);
   } else {
-    companies.push({ name: job.name, location: job.location, roles: [job] });
+    companies.push({
+      name: job.name,
+      location: job.location,
+      start: job.startDate,
+      end: job.endDate,
+      roles: [job],
+      visible: [],
+    });
   }
 }
 
+// Roles are newest-first, so the last role starts earliest and the first role
+// ends latest. A role without an end date means the company is current.
 for (const company of companies) {
+  company.start = company.roles[company.roles.length - 1].startDate;
+  company.end = company.roles.some((role) => !role.endDate)
+    ? null
+    : (company.roles[0].endDate ?? null);
   company.location =
     company.roles.find((role) => role.location)?.location ?? null;
+  company.visible = company.roles.filter((role) => role.resume);
 }
 
 interface ContactItem {
@@ -123,9 +140,14 @@ function formatRange(start: string, end?: string | null): string {
                   <span class="company__location">{company.location}</span>
                 )}
               </h3>
+              {company.visible.length < company.roles.length && (
+                <p class="company__when">
+                  {formatRange(company.start, company.end)}
+                </p>
+              )}
             </div>
             <ol class="roles">
-              {company.roles.map((role) => (
+              {company.visible.map((role) => (
                 <li class="role">
                   <div class="role__head">
                     <h4 class="role__title">{role.position}</h4>

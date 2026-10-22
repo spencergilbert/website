@@ -356,6 +356,14 @@ h2 {
   content: ' — ';
 }
 
+.company__when {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .roles {
   list-style: none;
   margin: 0.35rem 0 0;
@@ -535,6 +543,7 @@ h2 {
   }
 
   .entry__when,
+  .company__when,
   .role__when {
     font-size: 9pt;
   }

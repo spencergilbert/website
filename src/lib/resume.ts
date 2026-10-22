@@ -37,8 +37,11 @@ const workSchema = z.object({
   endDate: z.string().nullish(),
   location: z.string().nullish(),
   highlights: z.array(z.string()).default([]),
-  // Set `resume: false` to keep an entry in the data (and the home timeline)
-  // but omit it from the resume page and PDF. Included by default.
+  // Resume visibility, independent of the site:
+  //   resume: false    -> no line on the resume (kept on the home timeline),
+  //                       though its dates still count toward the company span
+  //   no `highlights`  -> collapsed to one title/date line under the company
+  //   `highlights`     -> full entry
   resume: z.boolean().default(true),
   // Site-only story fields, shown on the home timeline, never on the PDF.
   chapter: z.string().nullish(),
