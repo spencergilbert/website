@@ -33,8 +33,13 @@ sans for body copy. Warm paper, ink lines, one redline accent.
 ## Still open
 
 - **Real resume content** — roles, contact, and metrics are placeholders.
-- **Repo host and CI.** The repo lives under `tangled.org`, but Cloudflare Pages'
-  Git integration targets GitHub/GitLab (verify). Either deploy `dist/` with
-  `wrangler pages deploy` from CI/manually, or mirror to GitHub.
+- **Repo host and CI.** The repo lives under `tangled.org` and mirrors to
+  GitHub (`spencergilbert/website`), so Cloudflare Pages' Git integration can
+  target it. Otherwise deploy `dist/` with `wrangler pages deploy` from
+  CI/manually.
 - **Does the `spencergilbert.dev` zone move to Cloudflare?** Needed before the
   apex can point at Pages.
+
+## License
+
+MIT-0
