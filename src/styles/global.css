@@ -576,3 +576,318 @@ h2 {
     font-size: 9.5pt;
   }
 }
+
+/* ------------------------------------------------------------------
+   Drafting theme — architect's trace paper, not napkin sketch.
+   Architectural lettering for display, mono for labels, clean sans
+   for body. Sharp rules, graph grid, zero wobble.
+   Scoped to body.sketch so the resume (body.doc) stays a clean,
+   ATS-safe document. Print/PDF never sees this.
+------------------------------------------------------------------- */
+
+body.sketch {
+  --paper: #f6efdb;
+  --paper-2: #fffdf4;
+  --ink: #2e2a23;
+  --ink-soft: #4c4438;
+  --muted: #776c5c;
+  --line: #2e2a23;
+  --accent: #2f5d7c;
+  --redline: #b3402e;
+  --grid-minor: rgba(96, 78, 52, 0.13);
+  --grid-major: rgba(96, 78, 52, 0.24);
+  --font-hand: 'Amatic SC', 'Arial Narrow', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  background-color: var(--paper);
+  /* soft dot paper — faint warm dots, nothing else */
+  background-image: radial-gradient(
+    rgba(96, 78, 52, 0.1) 1px,
+    transparent 1.2px
+  );
+  background-size: 28px 28px;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* Sketch pages stay on warm light paper even in dark mode —
+   that's the point of paper. The resume (body.doc) still adapts. */
+
+body.sketch h1,
+body.sketch h2,
+body.sketch .site-title {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+body.sketch h2 {
+  font-size: 2rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='5' viewBox='0 0 240 5'%3E%3Cpath d='M1 3 C 60 1.5, 160 3.8, 239 2.2' fill='none' stroke='%232e2a23' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat left bottom / 100% 5px;
+}
+
+body.sketch .site-header {
+  border-bottom: 0;
+  position: relative;
+  padding-block: 1.1rem 1.5rem;
+}
+
+body.sketch .site-header::after {
+  content: '';
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 0.5rem;
+  height: 5px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='5' viewBox='0 0 240 5'%3E%3Cpath d='M1 2.5 C 80 1.5, 160 3.5, 239 2.4' fill='none' stroke='%232e2a23' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-x left center / 240px 5px;
+}
+
+body.sketch .site-title {
+  font-size: 1.6rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+body.sketch .site-header nav {
+  gap: 0.6rem;
+}
+
+body.sketch .site-header nav a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px;
+  padding: 0.3rem 0.7rem;
+  display: inline-block;
+  background: transparent;
+}
+
+body.sketch .site-header nav a[aria-current='page'] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+body.sketch .hero h1 {
+  font-size: clamp(2.8rem, 7vw, 4.2rem);
+  max-width: 16ch;
+}
+
+body.sketch .lede {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  max-width: 42rem;
+}
+
+/* precise drafting underline + redline tags, no markers */
+body.sketch .hand-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.12em;
+}
+
+body.sketch .marker {
+  background: none;
+  border-bottom: 3px solid var(--accent);
+  padding-inline: 0;
+}
+
+body.sketch .marker--pink {
+  background: none;
+  border-bottom: 3px solid var(--redline);
+  padding-inline: 0;
+}
+
+/* Buttons + links as sketched boxes */
+body.sketch .button {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 1.5px solid var(--ink);
+  border-radius: 5px 4px 6px 4px / 4px 6px 4px 5px;
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+body.sketch .button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+  text-decoration: none;
+}
+
+body.sketch .links a:not(.button) {
+  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.25em;
+}
+
+/* Ruler'd but hand-drawn: straight strokes, slight wobble. */
+body.sketch .doodle {
+  color: var(--redline);
+}
+
+/* Drawing index: index page only (resume keeps its own rules) */
+body.sketch .timeline {
+  border-left: 0;
+  padding-left: 0;
+  position: relative;
+}
+
+/* The rail: one attempted full line down the timeline, with a clear
+   stroked bracket per company group riding on it. */
+body.sketch .timeline::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='140' viewBox='0 0 3 140'%3E%3Cpath d='M1.5 0 C 1.4 50, 1.6 90, 1.5 140' fill='none' stroke='%232e2a23' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-y center top / 3px 140px;
+}
+
+/* the attempt ran short — second stroke over the middle, not quite in
+   line, with overshoot ticks where the pen started and stopped */
+body.sketch .timeline::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 30%;
+  height: 54%;
+  width: 12px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) left 2px top 0 / 9px 1.8px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) left 0 bottom 0 / 9px 1.8px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='100' viewBox='0 0 12 100' preserveAspectRatio='none'%3E%3Cpath d='M3 0 C 8 28, 0.5 55, 6 78 S 4 92, 7 100' fill='none' stroke='%232e2a23' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")
+    left top / 12px 100% no-repeat;
+}
+
+body.sketch .timeline__item {
+  background: var(--paper-2);
+  border: 1.5px solid var(--ink);
+  border-radius: 6px 5px 7px 5px / 5px 7px 5px 6px;
+  padding: 1rem 1.25rem 1.15rem 1.5rem;
+  margin-bottom: 1.25rem;
+  margin-left: 1.75rem;
+  box-shadow: none;
+  position: relative;
+}
+
+body.sketch .timeline__item:nth-child(odd),
+body.sketch .timeline__item:nth-child(even) {
+  border-radius: 6px 5px 7px 5px / 5px 7px 5px 6px;
+  transform: none;
+}
+
+body.sketch .timeline__item::before {
+  content: '';
+  left: -1.75rem;
+  top: 1.55rem;
+  width: 22px;
+  height: 4px;
+  margin-left: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='4' viewBox='0 0 22 4'%3E%3Cpath d='M1 2.2 C 8 1.4, 15 2.8, 21 1.8' fill='none' stroke='%232e2a23' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat center / 22px 4px;
+  border: 0;
+  border-radius: 0;
+}
+
+body.sketch .timeline__item::after {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: calc(1.55rem - 4px);
+  width: 9px;
+  height: 9px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 46% 54% 52% 48% / 55% 45% 58% 42%;
+}
+
+body.sketch .timeline__when {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: inline-block;
+}
+
+body.sketch .timeline__chapter {
+  font-size: 1.6rem;
+}
+
+body.sketch .timeline__body h3 {
+  font-size: 1.05rem;
+}
+
+body.sketch .timeline__aside {
+  border-left: 3px solid var(--redline);
+  background: none;
+  padding: 0 0 0 0.75rem;
+  display: block;
+  font-style: normal;
+  color: var(--ink-soft);
+}
+
+/* Title block footer with a hand-ruled top line */
+body.sketch .site-footer {
+  border-top: 0;
+  position: relative;
+  padding-top: 1.25rem;
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+body.sketch .site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1.25rem;
+  right: 1.25rem;
+  height: 5px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='5' viewBox='0 0 240 5'%3E%3Cpath d='M1 2.8 C 80 1.8, 160 3.6, 239 2.3' fill='none' stroke='%232e2a23' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-x left center / 240px 5px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    body.sketch .timeline__item {
+      animation: sheet-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+    @keyframes sheet-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+}

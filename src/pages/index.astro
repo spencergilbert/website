@@ -7,12 +7,17 @@ const hero = resume.basics.hook ?? resume.basics.label;
 const experience = byNewest(resume.work);
 ---
 
-<BaseLayout title="Spencer Gilbert — platform & infrastructure engineer">
+<BaseLayout title="Spencer Gilbert — platform & infrastructure engineer" sketch>
   <section class="hero">
+    <p class="hero__kicker">
+      <span class="kicker__rule" aria-hidden="true"></span>
+      Spencer Gilbert / Platform &amp; Infra
+    </p>
     <h1>{hero}</h1>
-    <p class="links">
-      <a class="button" href="/resume">Resume</a>
-      <a href="/spencer-gilbert-cv.pdf">Download PDF</a>
+    <p class="lede">
+      Platform engineer, release infrastructure + dev tooling. I make the
+      systems that ship software simpler, more reliable, and harder to
+      compromise.
     </p>
   </section>
 
@@ -21,3 +26,27 @@ const experience = byNewest(resume.work);
     <Timeline entries={experience} story />
   </section>
 </BaseLayout>
+
+<style>
+  .hero__kicker {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0 0 1rem;
+    color: var(--muted, #776c5c);
+  }
+  .kicker__rule {
+    display: inline-block;
+    width: 3rem;
+    height: 2px;
+    background: var(--redline, #b3402e);
+  }
+  section + section {
+    margin-top: 3rem;
+  }
+</style>

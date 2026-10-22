@@ -78,6 +78,55 @@ export type Education = z.infer<typeof eduSchema>;
 export const byNewest = (entries: Work[]): Work[] =>
   [...entries].sort((a, b) => b.startDate.localeCompare(a.startDate));
 
+export interface Company {
+  name: string;
+  location?: string | null;
+  start: string;
+  end?: string | null;
+  /** Every role at the company, newest first. */
+  roles: Work[];
+  /** The roles the resume page prints (`resume: false` filtered out). */
+  visible: Work[];
+}
+
+/**
+ * Group consecutive roles at the same company so a progression reads as one
+ * employer. Hidden roles (`resume: false`) get no line of their own, but
+ * their dates still count toward the company's overall span.
+ */
+export const groupCompanies = (work: Work[]): Company[] => {
+  const companies: Company[] = [];
+  for (const job of work) {
+    const current = companies[companies.length - 1];
+    if (current && current.name === job.name) {
+      current.roles.push(job);
+    } else {
+      companies.push({
+        name: job.name,
+        location: job.location,
+        start: job.startDate,
+        end: job.endDate,
+        roles: [job],
+        visible: [],
+      });
+    }
+  }
+
+  // Roles are newest-first, so the last role starts earliest and the first
+  // role ends latest. A role without an end date means the company is current.
+  for (const company of companies) {
+    company.start = company.roles[company.roles.length - 1].startDate;
+    company.end = company.roles.some((role) => !role.endDate)
+      ? null
+      : (company.roles[0].endDate ?? null);
+    company.location =
+      company.roles.find((role) => role.location)?.location ?? null;
+    company.visible = company.roles.filter((role) => role.resume);
+  }
+
+  return companies;
+}
+
 /** Split the JSON Resume summary string into paragraphs. */
 export const summaryParagraphs = (basics: Basics): string[] =>
   (basics.summary ?? '')

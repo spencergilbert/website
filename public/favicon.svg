@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#201d1b" />
-  <text
-    x="32"
-    y="43"
-    font-family="Georgia, 'Times New Roman', serif"
-    font-size="30"
-    text-anchor="middle"
-    fill="#faf8f5"
-  >SG</text>
+  <defs>
+    <pattern id="sg-dots" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.9" fill="#604e34" opacity="0.2"/>
+    </pattern>
+  </defs>
+  <g transform="rotate(-1.5 32 32)">
+    <rect x="6" y="6" width="52" height="52" rx="6" fill="#f6efdb" stroke="#2e2a23" stroke-width="3"/>
+    <rect x="9" y="9" width="46" height="46" fill="url(#sg-dots)"/>
+    <text x="32" y="40" text-anchor="middle" font-family="'Arial Narrow', Arial, sans-serif" font-size="26" font-weight="bold" letter-spacing="2" fill="#2e2a23">SG</text>
+    <path d="M18 46 C 26 44.5, 38 47, 46 45" fill="none" stroke="#b3402e" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
 </svg>

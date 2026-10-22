@@ -4,16 +4,19 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  /** Sketch (hand-drawn paper) chrome. Off for the resume — that page stays a clean document. */
+  sketch?: boolean;
 }
 
 const {
   title,
   description = 'Spencer Gilbert — platform and infrastructure engineer.',
+  sketch = false,
 } = Astro.props;
 
 const nav = [
   { href: '/', label: 'Home' },
-  { href: '/resume', label: 'Resume' },
+  { href: '/spencer-gilbert-cv.pdf', label: 'Resume' },
 ];
 const year = new Date().getFullYear();
 ---
@@ -27,8 +30,18 @@ const year = new Date().getFullYear();
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
+    {sketch && (
+      <>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      </>
+    )}
   </head>
-  <body>
+  <body class={sketch ? 'sketch' : 'doc'}>
     <header class="site-header">
       <a class="site-title" href="/">Spencer Gilbert</a>
       <nav>

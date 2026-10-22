@@ -1,54 +1,20 @@
 ---
-import { resume, byNewest, summaryParagraphs } from '../lib/resume';
-import type { Work } from '../lib/resume';
+import {
+  resume,
+  byNewest,
+  groupCompanies,
+  summaryParagraphs,
+} from '../lib/resume';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const { basics, skills, education } = resume;
 const summary = summaryParagraphs(basics);
 
-// Consecutive roles at the same company are grouped so a progression reads as
-// one employer. `resume: false` gives a role no line of its own, but its dates
-// still count toward the company's overall span — so omitting the roles that
-// weren't distinct work doesn't leave a gap.
-const work = byNewest(resume.work);
-
-interface Company {
-  name: string;
-  location?: string | null;
-  start: string;
-  end?: string | null;
-  roles: Work[];
-  visible: Work[];
-}
-
-const companies: Company[] = [];
-for (const job of work) {
-  const current = companies[companies.length - 1];
-  if (current && current.name === job.name) {
-    current.roles.push(job);
-  } else {
-    companies.push({
-      name: job.name,
-      location: job.location,
-      start: job.startDate,
-      end: job.endDate,
-      roles: [job],
-      visible: [],
-    });
-  }
-}
-
-// Roles are newest-first, so the last role starts earliest and the first role
-// ends latest. A role without an end date means the company is current.
-for (const company of companies) {
-  company.start = company.roles[company.roles.length - 1].startDate;
-  company.end = company.roles.some((role) => !role.endDate)
-    ? null
-    : (company.roles[0].endDate ?? null);
-  company.location =
-    company.roles.find((role) => role.location)?.location ?? null;
-  company.visible = company.roles.filter((role) => role.resume);
-}
+// Consecutive roles at the same company read as one employer. `resume: false`
+// gives a role no line of its own, but its dates still count toward the
+// company's overall span — so omitting the roles that weren't distinct work
+// doesn't leave a gap.
+const companies = groupCompanies(byNewest(resume.work));
 
 interface ContactItem {
   label: string;
