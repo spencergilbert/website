@@ -24,4 +24,9 @@ steps:
   - name: "Build site and render resume PDF"
     command: "npm run render:cv"
   - name: "Deploy to Cloudflare Pages"
-    command: "npx wrangler pages deploy dist --project-name=spencergilbert-dev --branch=main --no-bundle"
+    command: |
+      npx wrangler pages deploy dist \
+        --project-name=spencergilbert-dev \
+        --branch=main \
+        --commit-hash="$TANGLED_SHA" \
+        --no-bundle

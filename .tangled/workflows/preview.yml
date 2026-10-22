@@ -1,0 +1,45 @@
+# Preview deployments for pull requests targeting the default branch.
+#
+# The production deploy is deploy.yml; a preview never touches it. Each run
+# uploads dist/ under the PR's source branch, so Cloudflare Pages publishes it
+# as a preview at https://<branch>.<project>.pages.dev (branch lowercased,
+# non-alphanumerics collapsed to "-"). Wrangler prints the exact URL.
+#
+# Fork pull requests run without pipeline secrets, so they stop after a build.
+when:
+  - event: "pull_request"
+    branch: ["main"]
+engine: "microvm"
+image: "nixos"
+dependencies:
+  - nodejs_24
+  - chromium
+environment:
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+  PLAYWRIGHT_CHROMIUM_EXECUTABLE: "chromium"
+  PLAYWRIGHT_CHROMIUM_ARGS: "--no-sandbox"
+steps:
+  - name: "Install dependencies"
+    command: "npm ci"
+  - name: "Build site and render resume PDF"
+    command: "npm run render:cv"
+  - name: "Deploy preview to Cloudflare Pages"
+    command: |
+      set -euo pipefail
+
+      if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+        echo "No Cloudflare credentials (fork pull request): skipping preview deploy."
+        exit 0
+      fi
+
+      branch="${TANGLED_PR_SOURCE_BRANCH:-${TANGLED_REF_NAME:-}}"
+      if [ -z "$branch" ]; then
+        echo "No source branch in the pipeline metadata; cannot build a preview alias."
+        exit 1
+      fi
+
+      npx wrangler pages deploy dist \
+        --project-name=spencergilbert-dev \
+        --branch="$branch" \
+        --commit-hash="${TANGLED_SHA:-${TANGLED_PR_SOURCE_SHA:-}}" \
+        --no-bundle

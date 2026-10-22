@@ -30,6 +30,13 @@ spindle. The workflow installs with `npm ci`, runs `npm run render:cv` to build
 the site and print the resume PDF, then uploads `dist/` to Cloudflare Pages with
 `wrangler pages deploy` (direct upload).
 
+Pull requests targeting `main` run `.tangled/workflows/preview.yml` instead:
+the same build is uploaded with the PR's source branch as the Pages branch, so
+it lands at `https://<branch>.<project>.pages.dev` (lowercased,
+non-alphanumerics collapsed to `-`). Wrangler prints the exact URL in the
+pipeline log. Fork pull requests build but skip the upload, because pipeline
+secrets are withheld from them.
+
 Requirements:
 
 - A spindle selected under **Settings → Pipelines** that supports the `microvm`
@@ -46,8 +53,6 @@ Playwright-managed Chromium. The workflow swaps in the NixOS Chromium through
 ## Still open
 
 - **Real resume content** — roles, contact, and metrics are placeholders.
-- **Does the `spencergilbert.dev` zone move to Cloudflare?** Needed before the
-  apex can point at Pages.
 
 ## License
 
